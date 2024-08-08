@@ -49,6 +49,22 @@ def load_image(image_path: str) -> Tuple[np.array, torch.Tensor]:
     image_transformed, _ = transform(image_source, None)
     return image, image_transformed
 
+def load_image_from_memory(image_source: Image.Image) -> Tuple[np.ndarray, torch.Tensor]:
+    transform = T.Compose(
+        [
+            T.RandomResize([800], max_size=1333),
+            T.ToTensor(),
+            T.Normalize([0.485, 0.456, 0.406], [0.229, 0.224, 0.225]),
+        ]
+    )
+    
+    # 이미지를 numpy 배열로 변환
+    image = np.asarray(image_source)
+    
+    # 변환된 이미지를 텐서로 변환
+    image_transformed, _ = transform(image_source, None)
+    
+    return image, image_transformed
 
 def predict(
         model,
